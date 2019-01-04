@@ -80,5 +80,5 @@ func ConfigureLogging() error {
 
     log.Info("Log level: " + level)
 
-    retun nil
+    return nil
 }
