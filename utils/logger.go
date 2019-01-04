@@ -28,54 +28,54 @@ func InitLogging() {
 func ConfigureLogging() error {
     path := filepath.Clean(viper.GetString(config.LogPath))
     if err := os.MkdirAll(path, constants.DefaultFolderPerms); err != nil {
-	    return err
+        return err
     }
 
     writer, err := rotatelogs.New(
-	    path+"/mygobb.%Y%m%d-%H%M.log",
-	    rotatelogs.WithLinkName(path),
-	    rotatelogs.WithMaxAge(time.Duration(viper.GetInt(config.LogDeleteAfterDays))*time.Hour*24),
-	    rotatelogs.WithRotationTime(time.Hour*24),
+        path+"/mygobb.%Y%m%d-%H%M.log",
+        rotatelogs.WithLinkName(path),
+        rotatelogs.WithMaxAge(time.Duration(viper.GetInt(config.LogDeleteAfterDays))*time.Hour*24),
+        rotatelogs.WithRotationTime(time.Hour*24),
     )
 
     if err != nil {
-	    return err
+        return err
     }
 
     log.AddHook(lfshook.NewHook(lfshook.WriterMap{
-	    log.DebugLevel: writer,
-	    log.InfoLevel:  writer,
-	    log.WarnLevel:  writer,
-	    log.ErrorLevel: writer,
-	    log.FatalLevel: writer,
+        log.DebugLevel: writer,
+        log.InfoLevel:  writer,
+        log.WarnLevel:  writer,
+        log.ErrorLevel: writer,
+        log.FatalLevel: writer,
     }, &log.JSONFormatter{}))
 
     level := viper.GetString(config.LogLevel)
 
     // In debug mode the log level is always debug
     if viper.GetBool(config.Debug) {
-	    level = "debug"
+        level = "debug"
     }
 
     // Apply log level
     switch level {
     case "debug":
-	    log.SetLevel(log.DebugLevel)
+        log.SetLevel(log.DebugLevel)
 
     case "info":
-	    log.SetLevel(log.InfoLevel)
+        log.SetLevel(log.InfoLevel)
 
     case "warn":
-	    log.SetLevel(log.WarnLevel)
+        log.SetLevel(log.WarnLevel)
 
     case "error":
         log.SetLevel(log.ErrorLevel)
 
     case "fatal":
-	    log.SetLevel(log.FatalLevel)
+        log.SetLevel(log.FatalLevel)
 
     case "panic":
-	    log.SetLevel(log.PanicLevel)
+        log.SetLevel(log.PanicLevel)
     }
 
     log.Info("Log level: " + level)
