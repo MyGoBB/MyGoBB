@@ -1,0 +1,20 @@
+debug: false
+api:
+  host: '0.0.0.0'
+  port: 8080
+  ssl:
+    enabled: false
+    cert: ''
+    key: ''
+  uploads:
+  size_limit: 150000000
+log:
+  path: './logs'
+  level: 'info'
+  deleteAfterDays: 30
+database:
+  host: 'localhost'
+  port: 3306
+  name: 'forum'
+  username: 'root'
+  password: ''

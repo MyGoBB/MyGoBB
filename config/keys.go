@@ -45,4 +45,19 @@ const (
 
     // AuthKey contains a key that will be replaced by something better
     AuthKey = "authKey"
+
+    // DatabaseHost is the host for the mysql database
+    DatabaseHost = "database.host"
+
+    // DatabasePort is the port used when connecting to the database
+    DatabasePort = "database.port"
+
+    // DatabaseName is the name of the database
+    DatabaseName = "database.name"
+
+    // DatabaseUsername is the username to use for connecting to the database
+    DatabaseUsername = "database.username"
+
+    // DatabasePassword is the password to use when connecting to the database
+    DatabasePassword = "database.password"
 )

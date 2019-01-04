@@ -39,7 +39,12 @@ func SetDefaults() {
     viper.SetDefault(UploadsMaximumSize, 100000)
     viper.SetDefault(LogPath, "./logs")
     viper.SetDefault(LogLevel, "info")
-    viper.SetDefault(LogDeleteAfterDays, "30")
+    viper.SetDefault(LogDeleteAfterDays, 30)
+    viper.SetDefault(DatabaseHost, "localhost")
+    viper.SetDefault(DatabasePort, 3306)
+    viper.SetDefault(DatabaseName, "forum")
+    viper.SetDefault(DatabaseUsername, "root")
+    viper.SetDefault(DatabasePassword, "")
 }
 
 // ContainsAuthKey checks wether the config contains a specified authentication key
