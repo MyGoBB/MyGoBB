@@ -9,6 +9,7 @@ import (
     "github.com/MyGoBB/MyGoBB/config"
     "github.com/MyGoBB/MyGoBB/constants"
     "github.com/MyGoBB/MyGoBB/utils"
+    "github.com/MyGoBB/MyGoBB/models"
     log "github.com/sirupsen/logrus"
     "github.com/spf13/cobra"
 )
@@ -49,6 +50,15 @@ func run(cmd *cobra.Command, args []string) {
 
     log.Info("Loading database...")
     // TODO: load and connect to a mysql database
+    latest_db_version, migrations, err := utils.GetMigrationInfo()
+    if len(migrations) != 0 {
+        log.Info("Running database migrations:")
+        err = utils.RunMigrations(latest_db_version)
+        if err != nil {
+            log.WithError(err).Error("Could not run migrations")
+        }
+        log.Info("Database migration successful")
+    }
 
     log.Info("Starting API server...")
     // TODO: implement an api server
