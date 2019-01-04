@@ -26,39 +26,37 @@ func InitLogging() {
 
 // ConfigureLogging applies the configuration to the logging library.
 func ConfigureLogging() error {
-    path := filepath.Clean(viper.GetString(config.LogPath))
-    if err := os.MkdirAll(path, constants.DefaultFolderPerms); err != nil {
-        return err
-    }
+	path := filepath.Clean(viper.GetString(config.LogPath))
+	if err := os.MkdirAll(path, constants.DefaultFolderPerms); err != nil {
+		return err
+	}
+	writer, err := rotatelogs.New(
+		path+"/mygobb.%Y%m%d-%H%M.log",
+		rotatelogs.WithLinkName(path),
+		rotatelogs.WithMaxAge(time.Duration(viper.GetInt(config.LogDeleteAfterDays))*time.Hour*24),
+		rotatelogs.WithRotationTime(time.Hour*24),
+	)
+	if err != nil {
+		return err
+	}
 
-    writer, err := rotatelogs.New(
-        path + "/mygobb.%Y%m%d-%H%M.log",
-        rotatelogs.WithLinkName(path),
-        rotatelogs.WithMaxAge(time.Duration(viper.GetInt(config.LogDeleteAfterDays))*time.Hour*24),
-        rotatelogs.WithRotationTime(time.Hour*24),
-    )
+	log.AddHook(lfshook.NewHook(lfshook.WriterMap{
+		log.DebugLevel: writer,
+		log.InfoLevel:  writer,
+		log.WarnLevel:  writer,
+		log.ErrorLevel: writer,
+		log.FatalLevel: writer,
+	}, &log.JSONFormatter{}))
 
-    if err != nil {
-        return err
-    }
+	level := viper.GetString(config.LogLevel)
 
-    log.AddHook(lfshook.NewHook(lfshook.WriterMap{
-        log.DebugLevel: writer,
-        log.InfoLevel: writer,
-        log.WarnLevel: writer,
-        log.ErrorLevel: writer,
-        log.FatalLevel: writer,
-    }, &log.JSONFormatter{}))
+	// In debug mode the log level is always debug
+	if viper.GetBool(config.Debug) {
+		level = "debug"
+	}
 
-    level := viper.GetString(config.LogLevel)
-
-    // In debug mode the log level is always debug
-    if viper.GetBool(config.Debug) {
-        level = "debug"
-    }
-
-    // Apply log level
-    switch level {
+	// Apply log level
+	switch level {
 	case "debug":
 		log.SetLevel(log.DebugLevel)
 
@@ -76,9 +74,9 @@ func ConfigureLogging() error {
 
 	case "panic":
 		log.SetLevel(log.PanicLevel)
-    }
+	}
 
-    log.Info("Log level: " + level)
+	log.Info("Log level: " + level)
 
-    return nil
+	return nil
 }
