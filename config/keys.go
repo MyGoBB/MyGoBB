@@ -1,10 +1,10 @@
 package config
 
 const (
-    // Debug is a boolean value that enables debug mode
-    Debug = "debug"
+	// Debug is a boolean value that enables debug mode
+	Debug = "debug"
 
-    // APIHost is a string containing the interface ip address
+	// APIHost is a string containing the interface ip address
 	// on what the api should listen on
 	APIHost = "api.host"
 
@@ -12,52 +12,52 @@ const (
 	// listen on
 	APIPort = "api.port"
 
-    // SSLEnabled is a boolean that states whether ssl should be enabled or not
+	// SSLEnabled is a boolean that states whether ssl should be enabled or not
 	SSLEnabled = "api.ssl.enabled"
 
-    // SSLGenerateLetsencrypt is a boolean that enables automatic SSL certificate
+	// SSLGenerateLetsencrypt is a boolean that enables automatic SSL certificate
 	// creation with letsencrypt
 	SSLGenerateLetsencrypt = "api.ssl.letsencrypt"
 
-    // SSLCertificate is a string containing the location of
+	// SSLCertificate is a string containing the location of
 	// a ssl certificate to use
 	SSLCertificate = "api.ssl.cert"
 
-    // SSLKey is a string containing the location of the key
+	// SSLKey is a string containing the location of the key
 	// for the ssl certificate
 	SSLKey = "api.ssl.key"
 
-    // UploadsMaximumSize is an integer that sets the maximum size for
+	// UploadsMaximumSize is an integer that sets the maximum size for
 	// file uploads through the api in Kilobytes
-    UploadsMaximumSize = "api.uploads.maximumSize"
+	UploadsMaximumSize = "api.uploads.maximumSize"
 
-    // LogPath is a string containing the path where logfiles should be
+	// LogPath is a string containing the path where logfiles should be
 	// stored
 	LogPath = "log.path"
 
-    // LogLevel is a string containing the log level
+	// LogLevel is a string containing the log level
 	LogLevel = "log.level"
 
-    // LogDeleteAfterDays is an integer containing the amounts of days
+	// LogDeleteAfterDays is an integer containing the amounts of days
 	// logs should be stored. They will be deleted after. If set to 0
 	// logs will be stored indefinitely.
 	LogDeleteAfterDays = "log.deleteAfterDays"
 
-    // AuthKey contains a key that will be replaced by something better
-    AuthKey = "authKey"
+	// AuthKey contains a key that will be replaced by something better
+	AuthKey = "authKey"
 
-    // DatabaseHost is the host for the mysql database
-    DatabaseHost = "database.host"
+	// DatabaseHost is the host for the database
+	DatabaseHost = "database.host"
 
-    // DatabasePort is the port used when connecting to the database
-    DatabasePort = "database.port"
+	// DatabasePort is the port used when connecting to the database
+	DatabasePort = "database.port"
 
-    // DatabaseName is the name of the database
-    DatabaseName = "database.name"
+	// DatabaseName is the name of the database
+	DatabaseName = "database.name"
 
-    // DatabaseUsername is the username to use for connecting to the database
-    DatabaseUsername = "database.username"
+	// DatabaseUsername is the username to use for connecting to the database
+	DatabaseUsername = "database.username"
 
-    // DatabasePassword is the password to use when connecting to the database
-    DatabasePassword = "database.password"
+	// DatabasePassword is the password to use when connecting to the database
+	DatabasePassword = "database.password"
 )

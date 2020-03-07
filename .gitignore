@@ -1,1 +1,4 @@
 .theia/
+logs/
+*.iml
+.idea/
