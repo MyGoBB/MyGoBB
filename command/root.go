@@ -64,7 +64,7 @@ func LoadDatabase() (err error) {
 
 	latest, migrations, err := utils.GetMigrationInfo()
 	if err != nil {
-		log.WithError(err).Error("Could not run migrations")
+		log.WithError(err).Error("Could get migration info")
 		return err
 	}
 

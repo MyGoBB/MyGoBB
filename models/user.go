@@ -18,6 +18,7 @@ type User struct {
 	Signature        sql.NullString `db:"signature"`
 	EmailConfirmedAt pq.NullTime    `db:"email_confirmed_at"`
 	CreatedOn        time.Time      `db:"created_on"`
+	UpdatedAt		 time.Time		`db:"created_at"`
 	LastSeen         pq.NullTime    `db:"last_seen"`
 }
 
@@ -27,6 +28,7 @@ func CreateUser(username string, password string, email string) *User {
 		Username:  username,
 		Email:     email,
 		CreatedOn: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	// set the users password

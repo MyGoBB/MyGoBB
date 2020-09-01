@@ -2,18 +2,19 @@ package utils
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"path/filepath"
 
+	"bitbucket.org/liamstask/goose/lib/goose"
 	"github.com/MyGoBB/MyGoBB/config"
 	"github.com/MyGoBB/MyGoBB/models"
-	//"bitbucket.org/liamstask/goose/lib/goose"
-	"github.com/pressly/goose"
-	//log "github.com/sirupsen/logrus"
+	//"github.com/pressly/goose"
 	"github.com/spf13/viper"
 )
 
 //var goose_conf *goose.DBConf
 var dbconf *config.DBConfig
+var goose_conf *goose.DBConf
 
 // GnerateDbConf generates a new DBConfig for migrations
 func GenerateDbConf() *config.DBConfig {
@@ -31,8 +32,10 @@ func GenerateDbConf() *config.DBConfig {
 	db_password := viper.GetString(config.DatabasePassword)
 	//migrations_path := filepath.Clean("db/migrations")
 	//migrations_path := filepath.Join(pkg.SrcRoot, pkg.ImportPath, "../db/migrations")
+
 	path, _ := GetExecutableDir()
-	migrations_path := filepath.Join(path, "/db/migrations")
+	migrations_path := filepath.Join(path, "db/migrations")
+	log.Info(migrations_path)
 
 	dbconf = &config.DBConfig{
 		MigrationsDir: migrations_path,
@@ -47,29 +50,19 @@ func GenerateDbConf() *config.DBConfig {
 }
 
 // GenerateGooseDbConf generates a new DBConf config for goose
-/*func GenerateGooseDbConf() *goose.DBConf {
+func GenerateGooseDbConf() *goose.DBConf {
 	if goose_conf != nil {
 		return goose_conf
 	}
 
-	pkg, _ := build.Import("github.com/MyGoBB/MyGoBB/mygobb", ".", build.FindOnly)
 	db_host := viper.GetString(config.DatabaseHost)
 	db_port := viper.GetInt(config.DatabasePort)
 	db_name := viper.GetString(config.DatabaseName)
 	db_username := viper.GetString(config.DatabaseUsername)
 	db_password := viper.GetString(config.DatabasePassword)
-	migrations_path := filepath.Join(pkg.SrcRoot, pkg.ImportPath, "../db/migrations")
 
-	goose_conf = &goose.DBConf{
-		MigrationsDir: migrations_path,
-		Env:           "development",
-		Driver: goose.DBDriver{
-			Name:    "mysql",
-			OpenStr: fmt.Sprintf("%s:%s@%s:%d/%s", db_username, db_password, db_host, db_port, db_name),
-			Import:  "github.com/go-sql-driver/mysql",
-			Dialect: &goose.MySqlDialect{},
-		},
-	}
+	path, _ := GetExecutableDir()
+	migrations_path := filepath.Join(path, "db/migrations")
 
 	goose_conf = &goose.DBConf{
 		MigrationsDir: migrations_path,
@@ -83,16 +76,23 @@ func GenerateDbConf() *config.DBConfig {
 	}
 
 	return goose_conf
-}*/
+}
 
 // GetMigrationInfo gets info regarding any pending migrations
 func GetMigrationInfo() (latest_db_version int64, migrations []*goose.Migration, err error) {
-	gooseConf := GenerateDbConf()
+	gooseConf := GenerateGooseDbConf()
+	db := models.GetDbSession()
 
-	latest_db_version, err = goose.GetDBVersion(gooseConf.Driver.Db)
-	current, err := goose.EnsureDBVersion(gooseConf.Driver.Db)
+	//latest_db_version, err = goose.GetDBVersion(gooseConf.Driver.Db)
+	//current, err := goose.EnsureDBVersion(gooseConf.Driver.Db)
+	latest_db_version, err = goose.GetMostRecentDBVersion(gooseConf.MigrationsDir)
+	current, err := goose.EnsureDBVersion(gooseConf, db.Db)
 	//latest_db_version, err = goose.GetMostRecentDBVersion(goose_conf.MigrationsDir)
 	migrations, err = goose.CollectMigrations(gooseConf.MigrationsDir, current, latest_db_version)
+
+	log.Info(latest_db_version)
+	log.Info(current)
+	log.Info(migrations)
 
 	return latest_db_version, migrations, err
 }
@@ -110,9 +110,12 @@ func GetMigrationInfo() (latest_db_version int64, migrations []*goose.Migration,
 
 // RunMigrations runs the database migrations
 func RunMigrations(version int64) error {
-	dbconf = GenerateDbConf()
+	//dbconf = GenerateDbConf()
 
-	return goose.Up(dbconf.Driver.Db, dbconf.MigrationsDir)
+	//return goose.Up(dbconf.Driver.Db, dbconf.MigrationsDir)
+
+	goose_conf := GenerateGooseDbConf()
+	return goose.RunMigrations(goose_conf, goose_conf.MigrationsDir, version)
 }
 
 /*func RunMigrations(version int64) error {

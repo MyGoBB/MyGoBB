@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS forums {
     order INTEGER DEFAULT 0
 };
 
-CREATE TABLE IF NOT EXISTS threads {
+CREATE TABLE IF NOT EXISTS topics {
     id SERIAL PRIMARY KEY,
     forum_id INTEGER REFERENCES forums(id) NOT NULL,
     user_id INTEGER REFERENCES users(id) NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS posts {
 
 -- +goose Down
 DROP TABLE posts;
-DROP TABLE threads;
+DROP TABLE topics;
 DROP TABLE forums;
 DROP TABLE permission_role;
 DROP TABLE permissions;
