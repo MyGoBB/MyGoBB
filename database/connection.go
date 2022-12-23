@@ -3,12 +3,13 @@ package database
 import (
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/MyGoBB/MyGoBB/config"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"strings"
 )
 
 var connection *gorm.DB
@@ -50,5 +51,14 @@ func GetConnection() (*gorm.DB, error) {
 		return db, nil
 	} else {
 		return nil, errors.New("invalid database type or database type is missing")
+	}
+}
+
+func Close() {
+	if connection != nil {
+		sql, err := connection.DB()
+		if err != nil {
+			sql.Close()
+		}
 	}
 }

@@ -55,7 +55,8 @@ func run(cmd *cobra.Command, args []string) {
 	log.Info("Starting API server...")
 	// TODO: implement an api server
 
-	log.Info("Starting Frontend server...")
+	log.Info("Starting Web Server...")
+
 	// TODO: implement a frontend server
 }
 
