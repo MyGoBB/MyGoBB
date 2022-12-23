@@ -46,6 +46,9 @@ const (
 	// AuthKey contains a key that will be replaced by something better
 	AuthKey = "authKey"
 
+	// DatabaseType is the type of database we want to use. Only postgresql and mysql supported at the moment
+	DatabaseType = "database.type"
+
 	// DatabaseHost is the host for the database
 	DatabaseHost = "database.host"
 

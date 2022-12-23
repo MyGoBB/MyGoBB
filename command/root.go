@@ -3,6 +3,7 @@ package command
 import (
 	"github.com/MyGoBB/MyGoBB/config"
 	"github.com/MyGoBB/MyGoBB/constants"
+	"github.com/MyGoBB/MyGoBB/database"
 	"github.com/MyGoBB/MyGoBB/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -62,22 +63,8 @@ func run(cmd *cobra.Command, args []string) {
 func LoadDatabase() (err error) {
 	log.Info("Loading database...")
 
-	latest, migrations, err := utils.GetMigrationInfo()
-	if err != nil {
-		log.WithError(err).Error("Could get migration info")
+	if err := database.RunMigrations(); err != nil {
 		return err
-	}
-
-	if len(migrations) != 0 {
-		log.Info("Running database migrations:")
-
-		err = utils.RunMigrations(latest)
-		if err != nil {
-			log.WithError(err).Error("Could not run migrations")
-			return err
-		}
-
-		log.Info("Database migration successful")
 	}
 
 	return nil

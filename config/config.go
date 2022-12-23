@@ -40,6 +40,7 @@ func SetDefaults() {
 	viper.SetDefault(LogPath, "./logs")
 	viper.SetDefault(LogLevel, "info")
 	viper.SetDefault(LogDeleteAfterDays, 30)
+	viper.SetDefault(DatabaseType, "mysql")
 	viper.SetDefault(DatabaseHost, "localhost")
 	viper.SetDefault(DatabasePort, 3306)
 	viper.SetDefault(DatabaseName, "forum")
